@@ -1,0 +1,160 @@
+openapi: 3.0.0
+info:
+  title: BCIToriApi
+  version: '1.0'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /api/item:
+    parameters: []
+    get:
+      summary: ''
+      operationId: get-api-items
+      responses:
+        '200':
+          description: OK
+      description: Get all items
+  /api/item/new:
+    put:
+      summary: ''
+      operationId: put-create-new-item
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad request. Missing information.
+        '401':
+          description: Unauthorized. User not logged in
+      description: User can create new sell ad
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                title:
+                  type: string
+                username:
+                  type: string
+                description:
+                  type: string
+                category:
+                  type: string
+                location:
+                  type: string
+                date:
+                  type: string
+                delivery-type:
+                  type: string
+                telephone:
+                  type: string
+                image:
+                  type: string
+              required:
+                - id
+                - title
+                - username
+                - description
+                - category
+                - location
+                - date
+                - delivery-type
+                - telephone
+            examples: {}
+        description: ''
+    parameters: []
+components:
+  schemas:
+    item:
+      title: item
+      type: object
+      description: ''
+      x-examples:
+        example-1:
+          id: A976456
+          username: Rauno59
+          title: Gibson guitar
+          description: Selling nice Les Paul from 1985
+          category: Hobby
+          location: Oulu
+          price: 1300
+          date: '2019-08-24T14:15:22Z'
+          delivery-type: Shipping or pickup
+          telephone: '0401231231'
+          image: {}
+      properties:
+        id:
+          type: string
+          description: Unique sale ad ID
+        username:
+          type: string
+          description: Item seller's username
+        title:
+          type: string
+          description: Sell ad title
+        description:
+          type: string
+          description: Item description
+        category:
+          type: string
+          description: Item category
+        location:
+          type: string
+          description: Item location
+        price:
+          type: number
+          description: Selling price
+        date:
+          type: string
+          description: Date when sale id was created
+          format: date-time
+        delivery-type:
+          type: string
+          description: Delivery shipping or pickup
+        telephone:
+          type: string
+          description: Seller's telephone number
+        image:
+          type: object
+          maxProperties: 4
+      required:
+        - id
+        - username
+        - title
+        - description
+        - category
+        - location
+        - price
+        - date
+        - delivery-type
+        - telephone
+    user:
+      title: user
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+          minLength: 5
+          maxLength: 25
+        password:
+          type: string
+          format: password
+        email:
+          type: string
+          format: email
+      required:
+        - id
+        - username
+        - password
+        - email
+      x-examples:
+        example-1:
+          id: 123123
+          username: Rauno59
+          password: pa$$word
+          email: user@example.com
+  securitySchemes: {}
