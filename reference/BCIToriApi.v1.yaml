@@ -5,7 +5,7 @@ info:
 servers:
   - url: 'http://localhost:3000'
 paths:
-  /api/item:
+  /api/items:
     parameters: []
     get:
       summary: ''
@@ -14,57 +14,46 @@ paths:
         '200':
           description: OK
       description: Get all items
-  /api/item/new:
-    put:
-      summary: ''
-      operationId: put-create-new-item
+  '/api/items/:id':
+    get:
+      summary: Your GET endpoint
+      tags: []
       responses:
-        '201':
-          description: Created
-        '400':
-          description: Bad request. Missing information.
-        '401':
-          description: Unauthorized. User not logged in
-      description: User can create new sell ad
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                id:
-                  type: string
-                title:
-                  type: string
-                username:
-                  type: string
-                description:
-                  type: string
-                category:
-                  type: string
-                location:
-                  type: string
-                date:
-                  type: string
-                delivery-type:
-                  type: string
-                telephone:
-                  type: string
-                image:
-                  type: string
-              required:
-                - id
-                - title
-                - username
-                - description
-                - category
-                - location
-                - date
-                - delivery-type
-                - telephone
-            examples: {}
-        description: ''
-    parameters: []
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  username:
+                    type: string
+                  title:
+                    type: string
+                  description:
+                    type: string
+                  category:
+                    type: string
+                  location:
+                    type: string
+                  price:
+                    type: number
+                  date:
+                    type: string
+                  delivery-type:
+                    type: string
+                  telephone:
+                    type: string
+                  image:
+                    type: object
+                required:
+                  - id
+        '404':
+          description: The item with the given ID was not found
+      operationId: 'get-api-items-:id'
+      description: Get item with given ID
 components:
   schemas:
     item:
