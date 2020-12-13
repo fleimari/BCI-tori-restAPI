@@ -54,6 +54,22 @@ paths:
           description: The item with the given ID was not found
       operationId: 'get-api-items-:id'
       description: Get item with given ID
+  '/api/item/delete/:id':
+    delete:
+      summary: ''
+      operationId: 'delete-api-item-delete-:id'
+      responses:
+        '200':
+          description: OK
+    get:
+      description: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/item'
 components:
   schemas:
     item:
