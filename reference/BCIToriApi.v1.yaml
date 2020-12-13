@@ -26,7 +26,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  id:
+                  item-id:
                     type: string
                   username:
                     type: string
@@ -49,7 +49,7 @@ paths:
                   image:
                     type: object
                 required:
-                  - id
+                  - item-id
         '404':
           description: The item with the given ID was not found
       operationId: 'get-api-items-:id'
@@ -62,7 +62,7 @@ components:
       description: ''
       x-examples:
         example-1:
-          id: A976456
+          id: '701'
           username: Rauno59
           title: Gibson guitar
           description: Selling nice Les Paul from 1985
@@ -75,7 +75,7 @@ components:
           image: {}
       properties:
         id:
-          type: string
+          type: integer
           description: Unique sale ad ID
         username:
           type: string
@@ -99,7 +99,7 @@ components:
           type: string
           description: Date when sale id was created
           format: date-time
-        delivery-type:
+        deliverytype:
           type: string
           description: Delivery shipping or pickup
         telephone:
@@ -117,11 +117,17 @@ components:
         - location
         - price
         - date
-        - delivery-type
+        - deliverytype
         - telephone
     user:
       title: user
       type: object
+      x-examples:
+        example-1:
+          id: 123123
+          username: Rauno59
+          password: pa$$word
+          email: user@example.com
       properties:
         id:
           type: integer
@@ -140,10 +146,4 @@ components:
         - username
         - password
         - email
-      x-examples:
-        example-1:
-          id: 123123
-          username: Rauno59
-          password: pa$$word
-          email: user@example.com
   securitySchemes: {}
