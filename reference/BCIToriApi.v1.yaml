@@ -8,7 +8,7 @@ paths:
   /api/items:
     parameters: []
     get:
-      summary: ''
+      summary: Get all items
       operationId: get-api-items
       responses:
         '200':
@@ -19,7 +19,7 @@ paths:
                 $ref: '#/components/schemas/item'
       description: Get all items
     post:
-      summary: ''
+      summary: Create new item
       operationId: post-api-items
       responses:
         '201':
@@ -35,7 +35,7 @@ paths:
         description: ''
   '/api/items/{id}':
     get:
-      summary: Your GET endpoint
+      summary: Get item with ID
       tags: []
       responses:
         '200':
@@ -74,7 +74,7 @@ paths:
       operationId: 'get-api-items-:id'
       description: Get item with given ID
     delete:
-      summary: ''
+      summary: Delete item with ID
       operationId: 'delete-api-items-:id'
       responses:
         '200':
@@ -83,7 +83,7 @@ paths:
           description: Item with the given ID was not found
       description: Delete item with given ID
     put:
-      summary: ''
+      summary: Update item with ID
       operationId: 'put-api-items-:id'
       responses:
         '200':
@@ -113,14 +113,15 @@ paths:
                   telephone: string
         description: ''
     parameters:
-      - schema: {}
+      - schema:
+          type: string
         name: id
         in: path
         required: true
         description: 'Item ID '
   /api/users:
     get:
-      summary: Your GET endpoint
+      summary: Get all users
       tags: []
       responses:
         '200':
@@ -132,11 +133,11 @@ paths:
       operationId: get-api-users
       description: Get all users
     post:
-      summary: ''
+      summary: Create new user
       operationId: post-api-users
       responses:
-        '200':
-          description: OK
+        '201':
+          description: Created
           content:
             application/json:
               schema:
@@ -169,7 +170,7 @@ paths:
         required: true
         description: User id
     get:
-      summary: Your GET endpoint
+      summary: Get user with ID
       tags: []
       responses:
         '200':
@@ -179,7 +180,7 @@ paths:
       operationId: get-api-users-id
       description: Find user with given ID
     delete:
-      summary: ''
+      summary: Delete user with ID
       operationId: delete-api-users-id
       responses:
         '200':
