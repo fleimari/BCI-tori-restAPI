@@ -175,6 +175,10 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
         '404':
           description: Not Found
       operationId: get-api-users-id
