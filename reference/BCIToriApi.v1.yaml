@@ -13,8 +13,12 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/item'
       description: Get all items
-  '/api/items/:id':
+  '/api/items/{id}':
     get:
       summary: Your GET endpoint
       tags: []
@@ -51,25 +55,42 @@ paths:
                 required:
                   - id
         '404':
-          description: The item with the given ID was not found
+          description: Item with the given ID was not found
       operationId: 'get-api-items-:id'
       description: Get item with given ID
-  '/api/item/delete/:id':
     delete:
       summary: ''
-      operationId: 'delete-api-item-delete-:id'
+      operationId: 'delete-api-items-:id'
       responses:
         '200':
           description: OK
-    get:
-      description: ''
+        '404':
+          description: Item with the given ID was not found
+      description: Delete item with given ID
+    put:
+      summary: ''
+      operationId: 'put-api-items-:id'
       responses:
         '200':
           description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/item'
+        '404':
+          description: Item with the given ID was not found
+      description: Update item with given ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                '':
+                  type: string
+        description: ''
+    parameters:
+      - schema: {}
+        name: id
+        in: path
+        required: true
+        description: 'Item ID '
 components:
   schemas:
     item:
