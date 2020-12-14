@@ -92,9 +92,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/item'
+        '403':
+          description: 'Forbidden: Username does not match!'
         '404':
           description: Item with the given ID was not found
-      description: Update item with given ID
+      description: Update item with given ID and matching username.
       requestBody:
         content:
           application/json:
