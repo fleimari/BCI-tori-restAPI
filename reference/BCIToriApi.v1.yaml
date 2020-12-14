@@ -5,7 +5,7 @@ info:
 servers:
   - url: 'http://localhost:3000'
 paths:
-  /api/items:
+  Get all items:
     parameters: []
     get:
       summary: ''
