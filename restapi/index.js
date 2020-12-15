@@ -185,7 +185,7 @@ app.get('/api/items/search/:searchtype/:keyword', (req, res) => {
   );
 
   if (results.length > 0) {
-    res.status(200).send({ results });
+    res.status(200).send(results);
   } else {
     res.status(404).send("No results found");
   }
