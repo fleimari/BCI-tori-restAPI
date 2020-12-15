@@ -208,7 +208,7 @@ paths:
         '404':
           description: Not Found
       operationId: 'get-api-items-:searchtype-:keyword'
-      description: Search items with searchtype (category/location/date) and keyword
+      description: Search items with searchtype and a keyword. (/api/items/location/vaasa)
     parameters:
       - schema:
           type: string
@@ -230,7 +230,7 @@ components:
       description: ''
       x-examples:
         example-1:
-          id: '701'
+          id: '7'
           username: Rauno59
           title: Gibson guitar
           description: Selling nice Les Paul from 1985
