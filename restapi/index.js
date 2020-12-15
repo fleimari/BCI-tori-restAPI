@@ -3,6 +3,7 @@ const app = express();
 const port = 3000;
 const timestamp = require('time-stamp');
 const bcrypt = require('bcrypt');
+const e = require('express');
 
 app.use(express.json());
 
@@ -78,12 +79,12 @@ app.get('/api/items/:id', (req, res) => {
   res.send(item)
 });
 
-//Post new item
+//Create new item
 app.post('/api/items', (req, res) => {
   console.log(req.body);
-  // 400 Bad Request
-  if ("username" in req.body == false) {
-    res.status(400).send("Bad Request: Username is required!")
+  if (!req.body.username || req.body.username.length < 5) {
+    res.status(400)
+    .send("Bad Request: Username is required and need to be at least 5 charachters long!")
     return;
   }
   if (!req.body.title) {
@@ -102,8 +103,7 @@ app.post('/api/items', (req, res) => {
     res.status(400).send("Bad Request: Location is required!")
     return;
   }
-  // || !Number.isInteger(price)
-  if (!req.body.price) {
+  if (!req.body.price || !Number.isInteger(req.body.price)) {
     res.status(400).send("Bad Request: Price is required in integers!")
     return;
   }
@@ -118,7 +118,6 @@ app.post('/api/items', (req, res) => {
     date: timestamp('DD.MM.YYYY HH:mm:ss'),
     deliverytype: req.body.deliverytype,
     telephone:  req.body.telephone,
-    //image:
   };
   items.push(newitem);
   res.status(201).send(newitem);
@@ -155,16 +154,16 @@ app.put('/api/items/:id', (req, res) => {
 
 //Delete item with ID
 app.delete('/api/items/:id', (req, res) => {
-  const item = items.find(d => d.id === parseInt(req.params.id))
-  if (!item) res.status(404).send('Could not find item with given ID')
+  const delitem = items.find(d => d.id === parseInt(req.params.id))
+  if (!delitem) res.status(404).send('Could not find item with given ID')
 
-  //If username mathces then user can delete item sell ad
-  if (item.username !== req.body.username) {
+  //If username mathces then user can delete item
+  if (delitem.username.toLowerCase !== req.body.username.toLowerCase) {
     res.status(403).send("Forbidden: Username does not match!")
     return;
   };
-  items.splice(d);
-  res.send(item)
+  items.splice((delitem.id - 1), 1);
+  res.status(200).send("OK: Item with id \""+ delitem.id +"\" has been deleted.");
 });
 
 //Search item with parameters
@@ -177,17 +176,15 @@ app.get('/api/items/search/:searchtype/:keyword', (req, res) => {
     res.status(400).send("Bad Request: Searchtype not supported");
     return;
   };
-
-  const results = items.filter((e) =>
+  const resultitem = items.filter((e) =>
     e[req.params.searchtype]
       .toLowerCase()
       .includes(req.params.keyword.toLowerCase())
   );
-
-  if (results.length > 0) {
-    res.status(200).send(results);
+  if (resultitem.length > 0) {
+    res.status(200).send(resultitem);
   } else {
-    res.status(404).send("No results found");
+    res.status(404).send("Not found");
   }
 });
 
@@ -200,55 +197,83 @@ let users = [
   {
     id: 1,
     username: "Rauno59",
-    password: "Metsastys2",
-    email: "rauno@yle.fi"
+    password: "$2b$06$5K2r8e0I.rH8yyfTSpfqau3q8Jvk6r0gGPqO1898RyntxC1EJTbxm",
+    email: "rauno59@yle.fi"
   },
   {
     id: 2,
     username: "Matti2",
-    password: "Kalastus5",
-    email: "rauno@yle.fi"
+    password: "$2b$06$/2F8x5AZC9IImjAV6szeFutFeSwISsSaY0nqBTwBsy1iKRq7jdxyy",
+    email: "matti2@yle.fi"
   },
   {
     id: 3,
     username: "Jussi69",
-    password: "Hiihto10",
-    email: "rauno@yle.fi"
+    password: "$2b$06$nGRA4mWlnUoIbWvGesMr3epH3oE1Rv6ITWL2XUClg7B16vH/p5NSW",
+    email: "jussi69@yle.fi"
   },
 ];
 
 //GET all users
-app.get('/users', (req, res) => {
+app.get('/api/users', (req, res) => {
   res.send(users)
-})
+});
+
+//GET user by id
+app.get('/api/users/:id', (req, res) => {
+  const user = users.find(c => c.id === parseInt(req.params.id))
+  if (!user) res.status(404).send('Could not find user with given ID')
+  res.send(user)
+});
 
 //POST user register
-app.post('/users/register', (req, res) => {
+app.post('/api/users/', (req, res) => {
   console.log(req.body);
-  // 400 Bad request
-  if (!req.body.username) {
-    res.status(400).send("Bad Request: Username is required!")
+  const usertaken = users.find((e) => e.username === (req.body.username));
+  if (usertaken) {
+    res.status(409).send("Conflict: Username \""+ req.body.username + "\" is already taken!")
     return;
   }
-  if (!req.body.password) {
-    res.status(400).send("Bad Request: password is required!")
+  if (!req.body.username || req.body.username.length < 5) {
+    res.status(400)
+    .send("Bad Request: Username is required and need to be at least 5 charachters long!")
+    return;
+  }
+  if (!req.body.password || req.body.password < 5) {
+    res.status(400)
+    .send("Bad Request: Password is required and need to be at least 5 charachters long!")
     return;
   }
   if (!req.body.email) {
-    res.status(400).send("Bad Request: Email is required!")
+    res.status(400)
+    .send("Bad Request: Email is required!")
     return;
   }
-
-  const hashedpwd = bcrypt.hashSync(password, 6)
-  let user = {
+  const hashedpwd = bcrypt.hashSync(req.body.password, 6)
+  let newuser = {
     id: users.length + 1,
     username: req.body.username,
-    password: hashedpwd
+    password: hashedpwd,
+    email: req.body.email
   }
-  users.push(user)
-  res.status(201).send(user)
+  users.push(newuser)
+  res.status(201).send(newuser)
 });
 
+//Delete user with ID
+app.delete('/api/users/:id', (req, res) => {
+  const deluser = users.find(d => d.id === parseInt(req.params.id))
+  if (!deluser) {
+  res.status(404).send("Not Found: Could not find user with given ID")
+  return;
+  }
+  if (deluser.username !== req.body.username) {
+    res.status(400).send("Bad Request: Username does not match!")
+    return;
+  };
+  users.splice((deluser.id - 1), 1);
+  res.status(200).send("OK: User \""+ deluser.username +"\" has been deleted.");
+});
 
 //PORT
 app.listen(port, () => {
