@@ -243,7 +243,7 @@ components:
           image: {}
       properties:
         id:
-          type: integer
+          type: string
           description: Item ID will be generated at listing.
         username:
           type: string
