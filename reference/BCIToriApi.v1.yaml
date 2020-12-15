@@ -194,6 +194,34 @@ paths:
         '404':
           description: Not Found
       description: Delete user with given ID
+  '/api/items/{searchtype}/{keyword}':
+    get:
+      summary: Search item with parameters
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/item'
+        '404':
+          description: Not Found
+      operationId: 'get-api-items-:searchtype-:keyword'
+      description: Search items with searchtype (category/location/date) and keyword
+    parameters:
+      - schema:
+          type: string
+        name: searchtype
+        in: path
+        required: true
+        description: '"category/location/date"'
+      - schema:
+          type: string
+        name: keyword
+        in: path
+        required: true
+        description: '"guitar/dog/mersu"'
 components:
   schemas:
     item:
