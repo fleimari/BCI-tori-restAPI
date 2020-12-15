@@ -129,14 +129,12 @@ app.put('/api/items/:id', (req, res) => {
   if (!putitem) {
     res.status(404).send('Could not find item with given ID')
     return;
-  }
-  
+  };
   //If username mathces then user can rewrite item sell ad
   if (putitem.username !== req.body.username) {
     res.status(403).send("Forbidden: Username does not match!")
     return;
-  }
-  
+  };
   let mod = false;
     for (const key in req.body) {
       if (key in putitem) {
@@ -144,8 +142,7 @@ app.put('/api/items/:id', (req, res) => {
         mod = true;
       }
     };
-
-    if (mod) {
+    if (mod) { 
       res.status(200).json(putitem);
     } else {
       res.status(400).send("Bad Request")
@@ -192,6 +189,7 @@ app.get('/api/items/search/:searchtype/:keyword', (req, res) => {
 /*********************************************
 * USER ENDPOINTS
 ********************************************/
+
 //Test users
 let users = [
   {
