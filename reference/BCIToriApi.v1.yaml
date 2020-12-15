@@ -144,6 +144,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/user'
+        '409':
+          description: 'Conflict: Username is already taken!'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
       description: Create new user
       requestBody:
         content:
@@ -153,6 +162,7 @@ paths:
               properties:
                 username:
                   type: string
+                  minLength: 5
                 password:
                   type: string
                   format: password
