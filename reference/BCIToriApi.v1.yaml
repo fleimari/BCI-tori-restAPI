@@ -201,6 +201,8 @@ paths:
       responses:
         '200':
           description: OK
+        '400':
+          description: 'Bad Request: Username does not match!'
         '404':
           description: Not Found
       description: Delete user with given ID
